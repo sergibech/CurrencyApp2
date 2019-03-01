@@ -1,5 +1,6 @@
 package android.example.currencyapp2
 
+import android.app.Activity
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.example.currencyapp2.databinding.ActivityMainBinding
@@ -21,13 +22,11 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding.buttonMoneda.setOnClickListener {
-            obrirLlista(it)
+            obrirLlista(1)
         }
         binding.buttonMoneda2.setOnClickListener {
-            obrirLlista(it)
+            obrirLlista(2)
        }
-
-        canviarTextBoto1()
 
         binding.buttonConvertir.setOnClickListener {
             calcula()
@@ -48,16 +47,9 @@ class MainActivity : AppCompatActivity() {
         binding.textValor2.setText(temp1)
     }
 
-    fun obrirLlista(it: View) {
-        val intent = Intent(this, ListMonedesActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun canviarTextBoto1(){
-        val intent = intent
-        val textBoto1: Button = binding.buttonMoneda
-        textBoto1.setText(intent.getStringExtra("moneda"))
-
+    fun obrirLlista(select: Int) {
+        val intent = Intent (this, ListMonedesActivity::class.java)
+        startActivityForResult(intent, select)
     }
 
     fun calcula() {
@@ -73,5 +65,22 @@ class MainActivity : AppCompatActivity() {
     fun convertEuroToDolar(euro: Double): Double{
         val dolar = euro*1.14
         return dolar
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1){
+            if (resultCode == Activity.RESULT_OK){
+
+                binding.buttonMoneda.text = data?.getStringExtra("moneda")
+            }
+        } else if (requestCode == 2) {
+            if (resultCode == Activity.RESULT_OK) {
+                binding.buttonMoneda2.text = data?.getStringExtra("moneda")
+
+            }
+
+        }
+
+
     }
 }

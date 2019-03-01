@@ -1,5 +1,6 @@
 package android.example.currencyapp2
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -22,9 +23,10 @@ class ListMonedesActivity : AppCompatActivity() {
     }
 
     private fun escollirMoneda(moneda: String) {
-        val intent= Intent(this, MainActivity::class.java)
+        val intent= Intent()
         intent.putExtra("moneda", moneda)
-        startActivity(intent)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
     private fun initLlista(it: ListMonedesActivity ) {
