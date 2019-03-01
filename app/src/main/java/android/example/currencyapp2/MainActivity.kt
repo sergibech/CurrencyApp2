@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
         binding.buttonMoneda.setOnClickListener {
             obrirLlista(it)
         }
@@ -32,16 +33,19 @@ class MainActivity : AppCompatActivity() {
             calcula()
         }
 
-        //binding.inverseButton.setOnClickListener() {
-            //inverse()
-        //}
+        binding.inverseButton.setOnClickListener() {
+            inverse()
+        }
 
     }
 
     fun inverse() {
-        //val temp: String = binding.buttonMoneda.text.toString()
-       // binding.buttonMoneda.setText(binding.buttonMoneda2.text.toString())
-       // binding.buttonMoneda2.setText(temp)
+        val temp: String = binding.buttonMoneda.text.toString()
+        binding.buttonMoneda.setText(binding.buttonMoneda2.text.toString())
+        binding.buttonMoneda2.setText(temp)
+        val temp1: String = binding.textValor.text.toString()
+        binding.textValor.setText(binding.textValor2.text.toString())
+        binding.textValor2.setText(temp1)
     }
 
     fun obrirLlista(it: View) {
@@ -60,11 +64,14 @@ class MainActivity : AppCompatActivity() {
         val m: String = binding.buttonMoneda.text.toString()
         val n: String = binding.buttonMoneda2.text.toString()
         val r: TextView = binding.textValor2
-        val q: Int = binding.textValor.text.toString().toInt()
+        val q: Double = binding.textValor.text.toString().toDouble()
         if (m == "euro" && n == "dollar"){
-            val valor = q *2
-            r.setText(valor.toString())
+            r.text = convertEuroToDolar(q).toString()
         }
     }
 
+    fun convertEuroToDolar(euro: Double): Double{
+        val dolar = euro*1.14
+        return dolar
+    }
 }
