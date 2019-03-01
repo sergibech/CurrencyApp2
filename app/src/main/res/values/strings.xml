@@ -4,4 +4,8 @@
     <string name="button_moneda2">dollar</string>
     <string name="text_info">equal to</string>
     <string name="button_convert">CONVERT</string>
+    <string name="text_view">valor2</string>
+    <string name="text_comission">commission</string>
+    <string name="text_swap">swap</string>
+    <string name="inverse_button">inverse button</string>
 </resources>

@@ -32,7 +32,7 @@ class ListMonedesActivity : AppCompatActivity() {
     private fun initLlista(it: ListMonedesActivity ) {
         var llista_monedes: ListView
         llista_monedes = findViewById<ListView>(R.id.llista_monedes)
-        val monedes = listOf("euro", "dolar", "yen")
+        val monedes = listOf("euro", "dollar", "yen")
         val arrayAdapter = ArrayAdapter(it, android.R.layout.simple_list_item_1, monedes)
         llista_monedes.setAdapter(arrayAdapter)
     }
