@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CurrencyApp2</string>
+    <string name="app_name">Currency Converter</string>
     <string name="moneda_button">euro</string>
     <string name="button_moneda2">dollar</string>
     <string name="text_info">equal to</string>
