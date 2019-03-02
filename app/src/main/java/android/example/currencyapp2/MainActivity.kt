@@ -80,24 +80,19 @@ class MainActivity : AppCompatActivity() {
         //binding.textValor2.setText(temp1)
     }
 
-    private fun convertCustom(moneda: Float, comissio: Float): Float {
-        var ratio = (moneda*binding.ratioText.text.toString().toFloat()*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
-        return ratio
-    }
-
     private fun calculWithHash() {
         var canvi: Float = Constants.EURO_TO_DOLLAR
-        val euro_to_all: HashMap<String, Float> = hashMapOf("euro" to Constants.EURO_TO_EURO, "dollar" to Constants.EURO_TO_DOLLAR, "yen" to Constants.EURO_TO_YEN)
-        val all_to_euro: HashMap<String, Float> = hashMapOf("euro" to Constants.EURO_TO_EURO, "dollar" to Constants.DOLLAR_TO_EURO, "yen" to Constants.YEN_TO_EURO)
+        var comissio: Float = 1f
+
+        val euro_to_all: HashMap<String, Float> = hashMapOf("euro" to Constants.EURO_TO_EURO, "yen" to Constants.EURO_TO_YEN, "dollar" to Constants.EURO_TO_DOLLAR)
+        val all_to_euro: HashMap<String, Float> = hashMapOf("euro" to Constants.EURO_TO_EURO, "yen" to Constants.YEN_TO_EURO, "dollar" to Constants.DOLLAR_TO_EURO)
 
         val moneda_origen: String = binding.buttonMoneda.text.toString()
         val moneda_desti: String = binding.buttonMoneda2.text.toString()
 
         var valor_inicial: String = binding.textValor.text.toString()
         var result: TextView = binding.textValor2
-
-        var comissio: Float = 1f
-
+        
         if (valor_inicial == "") valor_inicial = "0"
 
         if (binding.textCommission.text.toString() != "") comissio = 1 - (binding.textCommission.text.toString().toFloat() / 100f)
@@ -109,9 +104,14 @@ class MainActivity : AppCompatActivity() {
         } else {
             canvi = (all_to_euro[moneda_origen]!!*euro_to_all[moneda_desti]!!) * comissio
             canvi*= valor_inicial.toFloat()
-            var round_canvi = canvi.toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
+            var round_canvi = canvi.toBigDecimal().setScale(2, RoundingMode.UP).toFloat()
             result.text = round_canvi.toString()
         }
+    }
+
+    private fun convertCustom(moneda: Float, comissio: Float): Float {
+        var ratio = (moneda*binding.ratioText.text.toString().toFloat()*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
+        return ratio
     }
 }
 
