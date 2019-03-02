@@ -58,9 +58,9 @@ class MainActivity : AppCompatActivity() {
         val temp: String = binding.buttonMoneda.text.toString()
         binding.buttonMoneda.setText(binding.buttonMoneda2.text.toString())
         binding.buttonMoneda2.setText(temp)
-        val temp1: String = binding.textValor.text.toString()
-        binding.textValor.setText(binding.textValor2.text.toString())
-        binding.textValor2.setText(temp1)
+        //val temp1: String = binding.textValor.text.toString()
+        //binding.textValor.setText(binding.textValor2.text.toString())
+        //binding.textValor2.setText(temp1)
     }
 
     private fun calcula() {
@@ -72,16 +72,9 @@ class MainActivity : AppCompatActivity() {
 
         var comissio: Float = 1f
 
-        if (valor_inicial == ""){
+        if (valor_inicial == "") valor_inicial = "0"
 
-            valor_inicial = "0"
-
-        }
-
-        if (binding.textCommission.text.toString() != ""){
-
-            comissio = 1 - (binding.textCommission.text.toString().toFloat() / 100f)
-        }
+        if (binding.textCommission.text.toString() != "") comissio = 1 - (binding.textCommission.text.toString().toFloat() / 100f)
 
         if (moneda_origen == "euro" && moneda_desti == "dollar"){
             var r = convertEuroToDolar(valor_inicial.toFloat(), comissio)
@@ -134,15 +127,15 @@ class MainActivity : AppCompatActivity() {
         val dollar = (yen*Constants.YEN_TO_DOLLAR*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
         return dollar
     }
+}
 
-    class Constants {
-        companion object {
-            const val EURO_TO_DOLLAR = 1.14f
-            const val EURO_TO_YEN = 127.28f
-            const val DOLLAR_TO_YEN = 111.96f
-            const val DOLLAR_TO_EURO = 0.88f
-            const val YEN_TO_EURO = 0.0079f
-            const val YEN_TO_DOLLAR = 0.0089f
-        }
+class Constants {
+    companion object {
+        const val EURO_TO_DOLLAR = 1.14f
+        const val EURO_TO_YEN = 127.28f
+        const val DOLLAR_TO_YEN = 111.96f
+        const val DOLLAR_TO_EURO = 0.88f
+        const val YEN_TO_EURO = 0.0079f
+        const val YEN_TO_DOLLAR = 0.0089f
     }
 }
