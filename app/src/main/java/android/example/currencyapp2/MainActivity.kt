@@ -35,44 +35,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-     private fun inverse() {
-        val temp: String = binding.buttonMoneda.text.toString()
-        binding.buttonMoneda.setText(binding.buttonMoneda2.text.toString())
-        binding.buttonMoneda2.setText(temp)
-        val temp1: String = binding.textValor.text.toString()
-        binding.textValor.setText(binding.textValor2.text.toString())
-        binding.textValor2.setText(temp1)
-    }
-
-     private fun obrirLlista(select: Int) {
+    private fun obrirLlista(select: Int) {
         val intent = Intent (this, ListMonedesActivity::class.java)
         startActivityForResult(intent, select)
-    }
-
-    private fun calcula() {
-        val m: String = binding.buttonMoneda.text.toString()
-        val n: String = binding.buttonMoneda2.text.toString()
-        val r: TextView = binding.textValor2
-        var q: String = binding.textValor.text.toString()
-        if (q == "") q = "0"
-        if (m == "euro" && n == "dollar"){
-            r.text = convertEuroToDolar(q.toFloat()).toString()
-        }
-        else if (m == "euro" && n == "yen") {
-            r.text = convertEuroToYen(q.toFloat()).toString()
-        }
-        else if (m == "dollar" && n == "yen") {
-            r.text = convertDollarToYen(q.toFloat()).toString()
-        }
-        else if (m == "dollar" && n == "euro") {
-            r.text = convertDollarToEuro(q.toFloat()).toString()
-        }
-        else if (m == "yen" && n == "euro") {
-            r.text = convertYenToEuro(q.toFloat()).toString()
-        }
-        else if (m == "yen" && n == "dollar") {
-            r.text = convertYenToDollar(q.toFloat()).toString()
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -89,29 +54,84 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun convertDollarToEuro(dollar: Float): Float {
-        var euro = (dollar*Constants.DOLLAR_TO_EURO).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
+     private fun inverse() {
+        val temp: String = binding.buttonMoneda.text.toString()
+        binding.buttonMoneda.setText(binding.buttonMoneda2.text.toString())
+        binding.buttonMoneda2.setText(temp)
+        val temp1: String = binding.textValor.text.toString()
+        binding.textValor.setText(binding.textValor2.text.toString())
+        binding.textValor2.setText(temp1)
+    }
+
+    private fun calcula() {
+        val moneda_origen: String = binding.buttonMoneda.text.toString()
+        val moneda_desti: String = binding.buttonMoneda2.text.toString()
+
+        var valor_inicial: String = binding.textValor.text.toString()
+        var result: TextView = binding.textValor2
+
+        var comissio: Float = 1f
+
+        if (valor_inicial == ""){
+
+            valor_inicial = "0"
+
+        }
+
+        if (binding.textCommission.text.toString() != ""){
+
+            comissio = 1 - (binding.textCommission.text.toString().toFloat() / 100f)
+        }
+
+        if (moneda_origen == "euro" && moneda_desti == "dollar"){
+            var r = convertEuroToDolar(valor_inicial.toFloat(), comissio)
+            result.text = r.toString()
+        }
+        else if (moneda_origen == "euro" && moneda_desti == "yen") {
+            var r = convertEuroToYen(valor_inicial.toFloat(), comissio)
+            result.text = r.toString()
+        }
+        else if (moneda_origen == "dollar" && moneda_desti == "yen") {
+            var r = convertDollarToYen(valor_inicial.toFloat(), comissio)
+            result.text = r.toString()
+        }
+        else if (moneda_origen == "dollar" && moneda_desti == "euro") {
+            var r = convertDollarToEuro(valor_inicial.toFloat(), comissio)
+            result.text = r.toString()
+        }
+        else if (moneda_origen == "yen" && moneda_desti == "euro") {
+            var r = convertYenToEuro(valor_inicial.toFloat(), comissio)
+            result.text = r.toString()
+        }
+        else if (moneda_origen == "yen" && moneda_desti == "dollar") {
+            var r = convertYenToDollar(valor_inicial.toFloat(), comissio)
+            result.text = r.toString()
+        }
+    }
+
+    private fun convertDollarToEuro(dollar: Float, comissio: Float): Float {
+        var euro = (dollar*Constants.DOLLAR_TO_EURO*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
         return euro
     }
-    private fun convertDollarToYen(dollar: Float): Float {
-        val yen = (dollar*Constants.DOLLAR_TO_YEN).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
+    private fun convertDollarToYen(dollar: Float, comissio: Float): Float {
+        val yen = (dollar*Constants.DOLLAR_TO_YEN*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
         return yen
     }
 
-    private fun convertEuroToDolar(euro: Float): Float{
-        val dolar = (euro*Constants.EURO_TO_DOLLAR).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
+    private fun convertEuroToDolar(euro: Float, comissio: Float): Float{
+        val dolar = (euro*Constants.EURO_TO_DOLLAR*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
         return dolar
     }
-    private fun convertEuroToYen(euro: Float): Float{
-        val  yen = (euro*Constants.EURO_TO_YEN).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
+    private fun convertEuroToYen(euro: Float, comissio: Float): Float{
+        val  yen = (euro*Constants.EURO_TO_YEN*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
         return yen
     }
-    private fun convertYenToEuro(yen: Float): Float {
-        val euro = (yen*Constants.YEN_TO_EURO).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
+    private fun convertYenToEuro(yen: Float, comissio: Float): Float {
+        val euro = (yen*Constants.YEN_TO_EURO*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
         return euro
     }
-    private fun convertYenToDollar(yen: Float): Float {
-        val dollar = (yen*Constants.YEN_TO_DOLLAR).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
+    private fun convertYenToDollar(yen: Float, comissio: Float): Float {
+        val dollar = (yen*Constants.YEN_TO_DOLLAR*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
         return dollar
     }
 
@@ -125,5 +145,4 @@ class MainActivity : AppCompatActivity() {
             const val YEN_TO_DOLLAR = 0.0089f
         }
     }
-
 }

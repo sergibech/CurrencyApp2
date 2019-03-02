@@ -23,7 +23,7 @@ class ListMonedesActivity : AppCompatActivity() {
     }
 
     private fun escollirMoneda(moneda: String) {
-        val intent= Intent()
+        val intent = Intent()
         intent.putExtra("moneda", moneda)
         setResult(Activity.RESULT_OK, intent)
         finish()
