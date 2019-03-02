@@ -1,13 +1,16 @@
 package android.example.currencyapp2
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.example.currencyapp2.databinding.ActivityMainBinding
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.w3c.dom.Text
@@ -21,6 +24,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        binding.switch1.setOnCheckedChangeListener { compoundButton, isChecked ->
+            setSwitch(isChecked)
+        }
+
         binding.buttonMoneda.setOnClickListener {
             obrirLlista(1)
         }
@@ -33,8 +40,19 @@ class MainActivity : AppCompatActivity() {
         binding.inverseButton.setOnClickListener() {
             inverse()
         }
+
     }
 
+    private fun setSwitch(isChecked: Boolean) {
+        val switch: Switch = binding.switch1
+        if (switch.isChecked) {
+            binding.ratioText.visibility = View.VISIBLE
+        } else {
+            binding.ratioText.setText("")
+            binding.ratioText.visibility = View.GONE
+        }
+
+    }
     private fun obrirLlista(select: Int) {
         val intent = Intent (this, ListMonedesActivity::class.java)
         startActivityForResult(intent, select)
@@ -76,7 +94,12 @@ class MainActivity : AppCompatActivity() {
 
         if (binding.textCommission.text.toString() != "") comissio = 1 - (binding.textCommission.text.toString().toFloat() / 100f)
 
-        if (moneda_origen == "euro" && moneda_desti == "dollar"){
+        if (binding.ratioText.text.toString() != "") {
+            var r = convertCustom(valor_inicial.toFloat(), comissio)
+            result.text = r.toString()
+
+        }
+        else if (moneda_origen == "euro" && moneda_desti == "dollar"){
             var r = convertEuroToDolar(valor_inicial.toFloat(), comissio)
             result.text = r.toString()
         }
@@ -101,7 +124,6 @@ class MainActivity : AppCompatActivity() {
             result.text = r.toString()
         }
     }
-
     private fun convertDollarToEuro(dollar: Float, comissio: Float): Float {
         var euro = (dollar*Constants.DOLLAR_TO_EURO*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
         return euro
@@ -126,6 +148,11 @@ class MainActivity : AppCompatActivity() {
     private fun convertYenToDollar(yen: Float, comissio: Float): Float {
         val dollar = (yen*Constants.YEN_TO_DOLLAR*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
         return dollar
+    }
+
+    private fun convertCustom(moneda: Float, comissio: Float): Float {
+        var ratio = (moneda*binding.ratioText.text.toString().toFloat()*comissio).toBigDecimal().setScale(4, RoundingMode.UP).toFloat()
+        return ratio
     }
 }
 

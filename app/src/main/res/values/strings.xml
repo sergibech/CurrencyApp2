@@ -8,4 +8,5 @@
     <string name="text_comission">commission</string>
     <string name="text_swap">swap</string>
     <string name="inverse_button">inverse button</string>
+    <string name="canvi_info">set your change ratio</string>
 </resources>
